@@ -4,11 +4,13 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+/* eslint-disable */
+
 export default {
   name: 'App'
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 </style>

@@ -1,7 +1,6 @@
 <template>
   <transition name="slide">
     <div class="m-container">
-      <navbar :title="$t('navigator.previewContract')" :showClose="showClose" @back="back"></navbar>
       <div class="box">
         <iframe id="mainIframe" name="mainIframe" :src="viewUrl" frameborder="0" scrolling="auto" ></iframe>
       </div>
@@ -11,7 +10,6 @@
 
 <script type="text/ecmascript-6">
 /* eslint-disable */
-  import Navbar from 'base/navbar/navbar'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -26,15 +24,11 @@
       ])
     },
     mounted() {
-      console.log(this.viewUrl)
     },
     methods: {
       back() {
         this.$router.back()
       }
-    },
-    components: {
-      Navbar
     }
   }
 </script>
@@ -50,7 +44,7 @@
   }
   .box{
     position: absolute;
-    top: 50px;
+    top: 0;
     bottom: 0;
     width: 100%;
   }

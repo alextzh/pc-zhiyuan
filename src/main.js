@@ -6,8 +6,6 @@ import router from './router'
 import store from './store'
 import fastclick from 'fastclick'
 import AMap from 'vue-amap'
-import i18n from './language'
-// import 'common/js/browser'
 
 import 'common/css/index.css'
 
@@ -22,16 +20,11 @@ AMap.initAMapApiLoader({
   plugin: ['AMap.Geolocation']
 })
 
-document.oncontextmenu = function(e) {
-  e.preventDefault()
-}
-
 Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
   router,
   store,
-  i18n,
   render: h => h(App)
 })

@@ -123,12 +123,12 @@
     },
     computed: {
       pullUpTxt() {
-        const moreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more || this.$i18n.t('scroll.defaultLoadTxtMore')
-        const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore || this.$i18n.t('scroll.defaultLoadTxtNoMore')
+        const moreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more || '加载更多'
+        const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore || '没有更多了'
         return this.pullUpDirty ? moreTxt : noMoreTxt
       },
       refreshTxt() {
-        return (this.pullDownRefresh && this.pullDownRefresh.txt) || this.$i18n.t('scroll.defaultRefreshTxt')
+        return (this.pullDownRefresh && this.pullDownRefresh.txt) || '刷新成功'
       }
     },
     created() {
@@ -280,9 +280,12 @@
     bottom: 0;
     overflow: hidden;
     .scroll-content{
+      max-width: 1100px;
       position: relative;
       z-index: 1;
-      padding: 10px;
+      width: 80%;
+      margin: 0 auto;
+      padding: 10px 0;
     }
     .list-content {
       position: relative;

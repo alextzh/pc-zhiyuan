@@ -1,26 +1,27 @@
 <template>
   <transition name="slide">
     <div class="m-container" id="box" ref="container">
+      <navbar></navbar>
       <el-amap vid="amap" :plugin="plugin" class="amap-demo" style="display:none;">
       </el-amap>
-      <div class="logo">
-        <img src="./logo.png" alt="">
+      <div class="login_box">
+        <div class="login_title">账号登录</div>
+        <form class="form_area" method="post" @submit.prevent="sub()">
+          <div class="input_area">
+            <div class="input_form">
+              <i class="iconfont icon-phone"></i>
+              <input v-model="user.mobile" maxlength="11" type="text" placeholder="请输入手机号" @focus="onFocus" @blur="onBlur" />
+            </div>
+            <div class="input_form">
+              <i class="iconfont icon-pwd"></i>
+              <input v-model="user.password" maxlength="20" type="password" placeholder="请输入密码" @focus="onFocus" @blur="onBlur" />
+            </div>
+          </div>
+          <div class="btn_area">
+            <button type="submit" :disabled="btnDisabled" :class="{'weui-btn_disabled': btnDisabled}" class="weui-btn weui-btn_primary"><i :class="{'weui-loading': btnLoading}"></i>{{loginBtnTxt}}</button>
+          </div>
+        </form>
       </div>
-      <form class="form_area" method="post" @submit.prevent="sub()">
-        <div class="input_area">
-          <div class="input_form">
-            <i class="iconfont icon-phone"></i>
-            <input v-model="user.mobile" maxlength="11" type="number" :placeholder="phoneNumber" @focus="onFocus" @blur="onBlur" />
-          </div>
-          <div class="input_form">
-            <i class="iconfont icon-pwd"></i>
-            <input v-model="user.password" maxlength="20" type="password" :placeholder="userPwd" @focus="onFocus" @blur="onBlur" />
-          </div>
-        </div>
-        <div class="btn_area">
-          <button type="submit" :disabled="btnDisabled" :class="{'weui-btn_disabled': btnDisabled}" class="weui-btn weui-btn_primary"><i :class="{'weui-loading': btnLoading}"></i>{{loginBtnTxt}}</button>
-        </div>
-      </form>
     </div>
   </transition>
 </template>
@@ -45,6 +46,7 @@
           password: ''
         },
         interval: null,
+        loginBtnTxt: '登录',
         btnLoading: false,
         btnDisabled: false,
         lng: 0,
@@ -67,40 +69,7 @@
         }]
       }
     },
-    computed: {
-      phoneNumber() {
-        return this.$i18n.t('login.phoneNumber')
-      },
-      userPwd() {
-        return this.$i18n.t('login.password')
-      },
-      loginBtnTxt() {
-        return this.$i18n.t('login.loginBtnTxt')
-      },
-      tip() {
-        return this.$i18n.t('common.tip')
-      },
-      tip1() {
-        return this.$i18n.t('login.tip1')
-      },
-      tip2() {
-        return this.$i18n.t('login.tip2')
-      },
-      tip3() {
-        return this.$i18n.t('login.tip3')
-      },
-      netWork() {
-        return this.$i18n.t('common.network')
-      },
-      confirm() {
-        return this.$i18n.t('common.confirm')
-      },
-      cancel() {
-        return this.$i18n.t('common.cancel')
-      }
-    },
     created() {
-      this.$i18n.locale = this.$route.params.lang === 'zh' ? 'zh' : this.$route.params.lang === 'en' ? 'en' : 'tw'
     },
     methods: {
       onFocus() {
@@ -116,6 +85,7 @@
         let param = this.user
         let flag = this.checkMobile(param) && this.checkPwd(param)
         if (flag) {
+          this.loginBtnTxt = '登录中'
           this.btnDisabled = true
           this.btnLoading = true
           this.mySubmit(param)
@@ -126,10 +96,10 @@
         if (mobile.length === 11) {
           return true
         } else {
-          weui.alert(this.tip1, {
-            title: this.tip,
+          weui.alert('请输入有效的手机号', {
+            title: '提示',
             buttons: [{
-              label: this.confirm,
+              label: '确定',
               type: 'primary',
               onClick: () => { console.log('ok') }
             }]
@@ -140,20 +110,20 @@
       checkPwd(param) {
         let pwd = param.password.trim()
         if (pwd.length <= 0) {
-          weui.alert(this.tip2, {
-            title: this.tip,
+          weui.alert('请输入密码', {
+            title: '提示',
             buttons: [{
-              label: this.confirm,
+              label: '确定',
               type: 'primary',
               onClick: () => { console.log('ok') }
             }]
           })
           return false
         } else if (pwd.length < 6 || pwd.length > 20) {
-          weui.alert(this.tip3, {
-            title: this.tip,
+          weui.alert('请输入6-20位密码', {
+            title: '提示',
             buttons: [{
-              label: this.confirm,
+              label: '确定',
               type: 'primary',
               onClick: () => { console.log('ok') }
             }]
@@ -182,6 +152,7 @@
               weui.toast(data.msg, {
                 duration: 1500
               })
+              this.loginBtnTxt = '登录'
               this.btnDisabled = false
               this.btnLoading = false
               return false
@@ -210,28 +181,34 @@
                 console.log(err)
               }
             })
+            console.log(data.obj)
             setUserInfo(data.obj)
             weui.toast(data.msg, {
               duration: 1500
             })
             setTimeout(() => {
+              this.loginBtnTxt = '登录'
               this.btnDisabled = false
               this.btnLoading = false
               this.$router.push({
-                path: '/' + this.$i18n.locale
+                path: '/'
               })
             }, 500)
           },
           error: (err) => {
             console.log(err)
-            weui.toast(this.netWork, {
+            weui.toast('登录超时', {
               duration: 1500
             })
+            this.loginBtnTxt = '登录'
             this.btnDisabled = false
             this.btnLoading = false
           }
         })
       }
+    },
+    components: {
+      Navbar
     }
   }
 </script>
@@ -246,20 +223,30 @@
     overflow-y: atuo;
     -webkit-overflow-scrolling: touch;
   }
-  .logo{
-    margin-top: 50px;
-    margin-bottom: 60px;
-    text-align: center;
-    img{
-      display: inline-block;
-      width: 240px;
-      height: 62px;
-    }
+  .login_box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    padding: 40px 10px 50px;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  }
+  .login_title{
+    padding: 0 15px;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: #333;
   }
   .form_area{
     display:flex;
     flex-direction:column;
-    width:100%;
+    width:30%;
+    min-width: 400px;
+    margin: 0 auto;
   }
   .input_area{
     flex:1;
@@ -273,7 +260,7 @@
     align-items: center;
     i{
       position: absolute;
-      top: 50%;
+      top: 46%;
       transform: translateY(-50%);
       font-size: 16px;
       color: #ff5251;
@@ -282,13 +269,13 @@
     input{
       position: relative;
       height:50px;
-      line-height: 16px;
-      padding:17px 25px;
+      line-height: 50px;
+      padding-left:25px;
       font-size: 16px;
       border-radius: 0;
       outline: none;
       flex: 1;
-      border-bottom: 1px solid #BDBDBD;
+      border-bottom: 1px solid #dfdfdf;
       box-sizing: border-box;
     }
   }

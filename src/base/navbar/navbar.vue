@@ -1,48 +1,39 @@
 <template>
-  <div class="navbar" :style="styleObj">
-    <div class="back" @click="back" v-if="showBack">
-      <i class="iconfont icon-fanhui" :style="{'color': styleObj.color}"></i>
+  <div class="navbar">
+    <div class="container">
+      <a class="logo" href="javascript:;">
+        <img src="./logo.png" alt="至元管理">
+      </a>
+      <div class="nav">
+        <div class="logout" v-if="isLogined">
+          <span class="name">欢迎您，{{name}}</span>
+          <span class="quit" @click="logout">退出</span>
+        </div>
+      </div>
     </div>
-    <div class="close" @click="close" v-if="showClose">
-      <i class="iconfont icon-guanbi" :style="{'color': styleObj.color}"></i>
-    </div>
-    <h1 class="title">{{title}}</h1>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 /* eslint-disable */
+
   export default{
     name: 'navbar',
     props: {
-      showBack: { // 是否显示返回按钮
+      isLogined: {
         type: Boolean,
-        default: true
+        default: false
       },
-      showClose: { // 是否显示关闭按钮
-        type: Boolean,
-        default: true
-      },
-      title: { // 标题
+      name: {
         type: String,
         default: ''
-      },
-      styleObj: { // 设置背景、字体颜色
-        type: Object,
-        default: function () {
-          return {
-            color: '#ffffff',
-            background: '#ff5251'
-          }
-        }
       }
     },
+    created() {
+    },
     methods: {
-      back() { // 发射返回事件
-        this.$emit('back')
-      },
-      close() { // 发射关闭事件
-        this.$emit('close')
+      logout() {
+        this.$emit('logout')
       }
     }
   }
@@ -54,27 +45,53 @@
     top: 0;
     display: flex;
     align-items: center;
-    height:50px;
-    line-height: 50px;
-    background: #ff5251;
-    color: #fff;
+    height:80px;
+    line-height: 80px;
+    background: #fff;
     width: 100%;
-    .back,.close{
-      position: absolute;
-      width: 50px;
-      height:50px;
-      text-align: center;
-      line-height:50px;
-      z-index: 99;
-      i{
-        font-size:18px;
-        color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    z-index: 9999;
+    .container{
+      display: flex;
+      align-items: center;
+      width:80%;
+      max-width:1280px;
+      margin: 0 auto;
+      .logo{
+        flex: 0 auto;
+        display: block;
+        height: 50px;
+        img{
+          width: auto;
+          height: 100%;
+          border: 0;
+          display: block;
+        }
+      }
+      .nav{
+        flex: 1;
+        height: 80px;
+        .logout{
+          float: right;
+          .name{
+            color: #333;
+            font-size: 14px;
+          }
+          .quit{
+            display: inline-block;
+            padding: 0 20px;
+            background: #fff;
+            color: #ff5251;
+            font-size: 16px;
+            transition: all .1s ease-in-out;
+          }
+          .quit:hover{
+            background: #ff5251;
+            color: #fff;
+          }
+        }
       }
     }
-    .title{
-      flex:1;
-      text-align: center;
-      font-size: 16px;
-    }
+    
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="m-container">
-      <navbar :title="$t('navigator.contract')" :showClose="showClose" @back="back"></navbar>
+      <navbar @logout="logOut" :isLogined="isLogined" :name="userName"></navbar>
       <div class="list">
         <scroll ref="scroll" class="scroll_list"
                 v-if="contractList.length > 0"
@@ -22,21 +22,21 @@
               </div>
               <div class="item_body">
                 <div class="item__left">
-                  <span>{{$t('management.contractName')}}：</span>
+                  <span>合同名称：</span>
                   <span class="new_data">{{item.doc_title}}</span>
                 </div>
               </div>
               <div class="item_action" v-if="item.sign_url && item.status === 'DQ'">
                 <div style="flex: 1;">
-                  <a class="btn" :href="item.sign_url">{{$t('management.signContract')}}</a>
+                  <a class="btn" href="javascript:;" @click="toSign(item.sign_url)">签署合同</a>
                 </div>
               </div>
               <div class="item_action" v-else>
                 <div style="flex: 1;margin-right:10px;">
-                  <a class="btn" :href="item.download_url">{{$t('management.download')}}</a>
+                  <a class="btn" :href="item.download_url">下载合同</a>
                 </div>
                 <div style="flex: 1;">
-                  <a class="btn" href="javascript:;" @click="toView(item.viewpdf_url)">{{$t('management.view')}}</a>
+                  <a class="btn" href="javascript:;" @click="toView(item.viewpdf_url)">预览合同</a>
                 </div>
               </div>
             </div>
@@ -59,7 +59,7 @@
   import Navbar from 'base/navbar/navbar'
   import {rendererZhMoneyWan, _normalizeDate} from 'common/js/tool'
   import * as API from 'common/js/http'
-  import {getUserInfo, setProduct} from 'common/js/storage'
+  import {getUserInfo, clearStorage} from 'common/js/storage'
   import 'weui'
   import weui from 'weui.js'
   import { mapMutations } from 'vuex'
@@ -90,16 +90,15 @@
           stop: parseInt(this.pullDownRefreshStop)
         } : false
       },
-      loadingTip() {
-        return this.$i18n.t('common.loading')
+      userName() {
+        return getUserInfo().name ? getUserInfo().name : ''
       },
-      netWork() {
-        return this.$i18n.t('common.network')
+      isLogined() {
+        return getUserInfo().id ? true : false
       }
     },
     created() {
-      this.$i18n.locale = this.$route.params.lang === 'zh' ? 'zh' : this.$route.params.lang === 'en' ? 'en' : 'tw'
-      this.loading = weui.loading(this.loadingTip)
+      this.loading = weui.loading('加载中')
       this.customer_id = getUserInfo().id
     },
     mounted() {
@@ -108,8 +107,26 @@
       }, 20)
     },
     methods: {
-      back() {
-        this.$router.back()
+      logOut() {
+        weui.confirm('您确定要退出当前账号吗', {
+          title: '退出提示',
+          buttons: [{
+            label: '取消',
+            type: 'default',
+            onClick: () => {
+              console.log('已取消')
+            }
+          }, {
+            label: '退出',
+            type: 'primary',
+            onClick: () => {
+              clearStorage()
+              this.$router.push({
+                path: '/login'
+              })
+            }
+          }]
+        })
       },
       getContractList() {
         $.ajax({
@@ -145,7 +162,7 @@
           },
           error: (err) => {
             console.log(err)
-            weui.toast(this.netWork, {
+            weui.toast('网络超时', {
               duration: 1500
             })
           }
@@ -155,14 +172,21 @@
         // 更新数据
         this.getContractList()
       },
+      toSign(url) {
+        this.setSignUrl(url)
+        this.$router.push({
+          path: '/sign-contract'
+        })
+      },
       toView(url) {
         this.setViewUrl(url)
         this.$router.push({
-          path: '/preview-contract/' + this.$i18n.locale
+          path: '/preview-contract'
         })
       },
       ...mapMutations({
-        setViewUrl: 'SET_VIEW_URL'
+        setViewUrl: 'SET_VIEW_URL',
+        setSignUrl: 'SET_SIGN_URL'
       })
     },
     components: {
@@ -175,7 +199,7 @@
 <style scoped lang="scss">
   .m-container {
     position: fixed;
-    top: 0;
+    top: 80px;
     bottom: 0;
     z-index: 100;
     width: 100%;
@@ -183,7 +207,7 @@
   }
   .list{
     position: fixed;
-    top: 50px;
+    top: 80px;
     bottom: 0;
     width: 100%;
     overflow: hidden;
