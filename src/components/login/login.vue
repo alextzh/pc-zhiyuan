@@ -181,10 +181,9 @@
                 console.log(err)
               }
             })
-            console.log(data.obj)
             setUserInfo(data.obj)
             weui.toast(data.msg, {
-              duration: 1500
+              duration: 500
             })
             setTimeout(() => {
               this.loginBtnTxt = '登录'

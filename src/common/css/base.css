@@ -30,10 +30,12 @@ button:active{
 }
 .no_data{
   position:fixed;
-  top:50px;
+  top:80px;
+  right: 0;
+  left: 0;
   bottom:0;
-  width:100%;
   display:flex;
+  flex-direction: column;
   align-items:center;
   justify-content:center;
   z-index: 99;
@@ -41,6 +43,11 @@ button:active{
 .no_data i{
   font-size:100px;
   color: #999999;
+}
+.no_data p{
+  font-size: 20px;
+  color: #999;
+  margin-top: -10px;
 }
 .slide-enter-active, .slide-leave-active {
   transition: all 0.3s;

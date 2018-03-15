@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <div class="container">
-      <a class="logo" href="javascript:;">
+      <a class="logo" href="/">
         <img src="./logo.png" alt="至元管理">
       </a>
       <div class="nav">
@@ -88,6 +88,7 @@
           .quit:hover{
             background: #ff5251;
             color: #fff;
+            cursor: pointer;
           }
         }
       }

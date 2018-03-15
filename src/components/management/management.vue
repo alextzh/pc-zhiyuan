@@ -3,12 +3,7 @@
     <div class="m-container">
       <navbar @logout="logOut" :isLogined="isLogined" :name="userName"></navbar>
       <div class="list">
-        <scroll ref="scroll" class="scroll_list"
-                v-if="contractList.length > 0"
-                :scrollbar="scrollbarObj"
-                :pullDownRefresh="pullDownRefreshObj"
-                :startY="parseInt(startY)"
-                @pullingDown="onPullingDown">
+        <ul>
           <li class="item-box" v-for="(item, index) in contractList" :key="index">
             <div class="item">
               <div class="item_head">
@@ -41,10 +36,11 @@
               </div>
             </div>
           </li>
-        </scroll>
+        </ul>
         <div v-if="hasData">
           <div class="no_data">
             <i class="iconfont icon-nodata"></i>
+            <p>暂无合同记录</p>
           </div>
         </div>
       </div>
@@ -55,9 +51,7 @@
 <script type="text/ecmascript-6">
 /* eslint-disable */
   import $ from 'jquery'
-  import Scroll from 'base/scroll/scroll'
   import Navbar from 'base/navbar/navbar'
-  import {rendererZhMoneyWan, _normalizeDate} from 'common/js/tool'
   import * as API from 'common/js/http'
   import {getUserInfo, clearStorage} from 'common/js/storage'
   import 'weui'
@@ -67,29 +61,13 @@
   export default {
     data() {
       return {
-        showClose: false,
         loading: null,
         contractList: [],
         customer_id: '',
-        scrollbar: true,
-        scrollbarFade: true,
-        pullDownRefresh: true,
-        pullDownRefreshThreshold: 90,
-        pullDownRefreshStop: 60,
-        startY: 0,
         hasData: false
       }
     },
     computed: {
-      scrollbarObj: function () {
-        return this.scrollbar ? {fade: this.scrollbarFade} : false
-      },
-      pullDownRefreshObj: function () {
-        return this.pullDownRefresh ? {
-          threshold: parseInt(this.pullDownRefreshThreshold),
-          stop: parseInt(this.pullDownRefreshStop)
-        } : false
-      },
       userName() {
         return getUserInfo().name ? getUserInfo().name : ''
       },
@@ -141,6 +119,7 @@
           },
           success: (res) => {
             if (!res.ret) {
+              console.log(res.msg)
               weui.toast(res.msg, {
                 duration: 1500
               })
@@ -156,9 +135,6 @@
             let list = res.rows
             this.contractList = list
             this.hasData = false
-            setTimeout(() => {
-              this.$refs.scroll.forceUpdate()
-            }, 20)
           },
           error: (err) => {
             console.log(err)
@@ -167,10 +143,6 @@
             })
           }
         })
-      },
-      onPullingDown() {
-        // 更新数据
-        this.getContractList()
       },
       toSign(url) {
         this.setSignUrl(url)
@@ -190,7 +162,6 @@
       })
     },
     components: {
-      Scroll,
       Navbar
     }
   }
@@ -198,19 +169,16 @@
 
 <style scoped lang="scss">
   .m-container {
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    z-index: 100;
-    width: 100%;
     background: #f6f6f6;
   }
   .list{
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    width: 100%;
-    overflow: hidden;
+    position: relative;
+    width: 80%;
+    max-width: 1280px;
+    padding-top: 100px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    overflow: auto;
   }
   .item-box {
     padding-bottom: 10px;

@@ -35,16 +35,16 @@
 
 <style scoped lang="scss">
   .m-container {
-    position: fixed;
+    background: #fff;
+    position: absolute;
     top: 0;
     bottom: 0;
-    z-index: 100;
     width: 100%;
-    background: #fff;
+    overflow: hidden;
   }
   .box{
     position: absolute;
-    top: 0;
+    top: 80px;
     bottom: 0;
     width: 100%;
   }
