@@ -9,7 +9,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-/* eslint-disable */
   import { mapGetters } from 'vuex'
 
   export default {

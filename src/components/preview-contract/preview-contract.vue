@@ -10,7 +10,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-/* eslint-disable */
   import Navbar from 'base/navbar/navbar'
   import { mapGetters } from 'vuex'
   import {getUserInfo, clearStorage} from 'common/js/storage'
@@ -28,7 +27,7 @@
         return getUserInfo().name ? getUserInfo().name : ''
       },
       isLogined() {
-        return getUserInfo().id ? true : false
+        return getUserInfo().id
       },
       ...mapGetters([
         'viewUrl'

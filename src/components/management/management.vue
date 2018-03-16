@@ -49,7 +49,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-/* eslint-disable */
   import $ from 'jquery'
   import Navbar from 'base/navbar/navbar'
   import * as API from 'common/js/http'
@@ -72,7 +71,7 @@
         return getUserInfo().name ? getUserInfo().name : ''
       },
       isLogined() {
-        return getUserInfo().id ? true : false
+        return getUserInfo().id
       }
     },
     created() {
@@ -108,12 +107,12 @@
       },
       getContractList() {
         $.ajax({
-          type: "POST",
+          type: 'POST',
           url: API.api + '/api/v1/contract/myContract',
           data: {
             customer_id: this.customer_id
           },
-          dataType: "jsonp",
+          dataType: 'jsonp',
           headers: {
             'content-type': 'application/x-www-form-urlencoded'
           },
@@ -132,7 +131,7 @@
             setTimeout(() => {
               this.loading.hide()
             }, 20)
-            let list = res.rows
+            const list = res.rows
             this.contractList = list
             this.hasData = false
           },

@@ -27,10 +27,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-/* eslint-disable */
   import $ from 'jquery'
   import Navbar from 'base/navbar/navbar'
-  import {regexConfig} from 'common/js/tool'
   import * as API from 'common/js/http'
   import {setUserInfo, setPosition, getPosition} from 'common/js/storage'
   import 'weui'
@@ -39,7 +37,7 @@
   export default{
     name: 'login',
     data() {
-      let self = this
+      const self = this
       return {
         user: {
           mobile: '',
@@ -74,7 +72,7 @@
     methods: {
       onFocus() {
         setTimeout(() => {
-          let pannel = document.getElementById('box')
+          const pannel = document.getElementById('box')
           pannel.scrollIntoView(true)
           pannel.scrollIntoViewIfNeeded()
         }, 100)
@@ -82,8 +80,8 @@
       onBlur() {
       },
       sub() {
-        let param = this.user
-        let flag = this.checkMobile(param) && this.checkPwd(param)
+        const param = this.user
+        const flag = this.checkMobile(param) && this.checkPwd(param)
         if (flag) {
           this.loginBtnTxt = '登录中'
           this.btnDisabled = true
@@ -92,7 +90,7 @@
         }
       },
       checkMobile(param) {
-        let mobile = param.mobile.trim()
+        const mobile = param.mobile.trim()
         if (mobile.length === 11) {
           return true
         } else {
@@ -108,7 +106,7 @@
         }
       },
       checkPwd(param) {
-        let pwd = param.password.trim()
+        const pwd = param.password.trim()
         if (pwd.length <= 0) {
           weui.alert('请输入密码', {
             title: '提示',
@@ -134,15 +132,15 @@
         }
       },
       mySubmit(param) {
-        let userInfo = {
+        const userInfo = {
           phone: param.mobile.trim(),
           pwd: param.password.trim()
         }
         $.ajax({
-          type: "POST",
+          type: 'POST',
           url: API.api + '/api/v1/login',
           data: userInfo,
-          dataType: "jsonp",
+          dataType: 'jsonp',
           asyn: false,
           headers: {
             'content-type': 'application/x-www-form-urlencoded'
@@ -157,16 +155,16 @@
               this.btnLoading = false
               return false
             }
-            let customer_id = data.obj.id
+            const customer_id = data.obj.id
             $.ajax({
-              type: "POST",
+              type: 'POST',
               url: API.api + '/api/v1/location/report',
               data: {
                 customer_id: customer_id,
                 latitude: getPosition().lat,
                 longitude: getPosition().lng
               },
-              dataType: "jsonp",
+              dataType: 'jsonp',
               headers: {
                 'content-type': 'application/x-www-form-urlencoded'
               },
