@@ -1,3 +1,5 @@
+import crypto from 'crypto'
+
 // 截取年月日
 export function _normalizeDate(date) {
   return date.substr(0, 10)
@@ -44,4 +46,31 @@ export function _normalizeStr(str) {
     return item
   })
   return newArr
+}
+
+export function getMd5() {
+  const timestamp = getBJDate().getTime()
+  const key = 'zhiyuancp'
+  const str = `${timestamp}${key}`
+  const md5 = crypto.createHash('md5')
+  md5.update(str)
+  return md5.digest('hex')
+}
+
+export function getBJDate() {
+  var d = new Date()
+  var currentDate = new Date()
+  var tmpHours = currentDate.getHours()
+  // 算得时区
+  var time_zone = -d.getTimezoneOffset() / 60
+  // 少于0的是西区 西区应该用时区绝对值加京八区 重新设置时间（西区时间比东区时间早 所以加时区间隔）
+  if (time_zone < 0) {
+    time_zone = Math.abs(time_zone) + 8
+    currentDate.setHours(tmpHours + time_zone)
+  } else {
+    // 大于0的是东区  东区时间直接跟京八区相减
+    time_zone -= 8
+    currentDate.setHours(tmpHours - time_zone)
+  }
+  return currentDate
 }

@@ -19,8 +19,8 @@
     name: 'navbar',
     props: {
       isLogined: {
-        type: Boolean,
-        default: false
+        type: String,
+        default: ''
       },
       name: {
         type: String,

@@ -53,6 +53,7 @@
   import Navbar from 'base/navbar/navbar'
   import * as API from 'common/js/http'
   import {getUserInfo, clearStorage} from 'common/js/storage'
+  import {getMd5, getBJDate} from 'common/js/tool'
   import 'weui'
   import weui from 'weui.js'
   import { mapMutations } from 'vuex'
@@ -71,7 +72,7 @@
         return getUserInfo().name ? getUserInfo().name : ''
       },
       isLogined() {
-        return getUserInfo().id
+        return getUserInfo().id ? getUserInfo().id : ''
       }
     },
     created() {
@@ -112,9 +113,11 @@
           data: {
             customer_id: this.customer_id
           },
-          dataType: 'jsonp',
+          dataType: 'json',
           headers: {
-            'content-type': 'application/x-www-form-urlencoded'
+            'content-type': 'application/x-www-form-urlencoded',
+            'secret_key': getMd5(),
+            'time_stamp': getBJDate().getTime()
           },
           success: (res) => {
             if (!res.ret) {
