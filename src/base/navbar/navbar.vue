@@ -48,7 +48,7 @@
     background: #fff;
     width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    z-index: 9999;
+    z-index: 999;
     .container{
       display: flex;
       align-items: center;
@@ -64,6 +64,11 @@
           height: 100%;
           border: 0;
           display: block;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .logo{
+          height:40px;
         }
       }
       .nav{
@@ -91,6 +96,6 @@
         }
       }
     }
-    
+
   }
 </style>

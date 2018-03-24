@@ -8,6 +8,7 @@ const Management = () => import('components/management/management')
 const PreviewContract = () => import('components/preview-contract/preview-contract')
 const SignContract = () => import('components/sign-contract/sign-contract')
 const NoFound = () => import('components/no-found/no-found')
+const Error = () => import('components/error/error')
 
 Vue.use(Router)
 
@@ -37,6 +38,10 @@ const router = new Router({
         requireAuth: true
       },
       component: SignContract
+    },
+    {
+      path: '/error',
+      component: Error
     },
     {
       path: '*',

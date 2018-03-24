@@ -4,8 +4,8 @@
       <navbar></navbar>
       <div class="content">
         <div class="img_wrap">
-          <img src="./404.png" alt="">
-          <p>页面不存在</p>
+          <img src="./error.png" alt="">
+          <p>请使用PC端访问</p>
         </div>
       </div>
     </div>
@@ -13,23 +13,23 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Navbar from 'base/navbar/navbar'
+  import Navbar from 'base/navbar/navbar'
 
-export default {
-  data() {
-    return {
-      showClose: false
+  export default {
+    data() {
+      return {
+        showClose: false
+      }
+    },
+    methods: {
+      back() {
+        this.$router.back()
+      }
+    },
+    components: {
+      Navbar
     }
-  },
-  methods: {
-    back() {
-      this.$router.back()
-    }
-  },
-  components: {
-    Navbar
   }
-}
 </script>
 
 <style scoped lang="scss">

@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import fastclick from 'fastclick'
 import AMap from 'vue-amap'
+import 'common/js/browser'
 
 import 'common/css/index.css'
 
