@@ -38,6 +38,7 @@ button:active{
   flex-direction: column;
   align-items:center;
   justify-content:center;
+  background: #fff;
   z-index: 99;
 }
 .no_data i{

@@ -3,7 +3,7 @@
     <div class="m-container">
       <navbar @logout="logOut" :isLogined="isLogined" :name="userName"></navbar>
       <div class="list">
-        <ul>
+        <ul style="width: 80%;max-width: 1280px;margin: 20px auto;">
           <li class="item-box" v-for="(item, index) in contractList" :key="index">
             <div class="item">
               <div class="item_head">
@@ -37,11 +37,9 @@
             </div>
           </li>
         </ul>
-        <div v-if="hasData">
-          <div class="no_data">
-            <i class="iconfont icon-nodata"></i>
-            <p>暂无合同记录</p>
-          </div>
+        <div class="no_data" v-if="hasData">
+          <i class="iconfont icon-nodata"></i>
+          <p>暂无合同记录</p>
         </div>
       </div>
     </div>
@@ -172,15 +170,21 @@
 <style scoped lang="scss">
   .m-container {
     background: #f6f6f6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
   .list{
     position: relative;
-    width: 80%;
-    max-width: 1280px;
-    padding-top: 100px;
-    padding-bottom: 10px;
-    margin: 0 auto;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding-top: 80px;
+    box-sizing: border-box;
   }
   .item-box {
     padding-bottom: 10px;
